@@ -3,6 +3,6 @@ module.exports ={
   coverageProvider: "v8",
 
   testMatch: [
-    "<rootDir>/src/**/*.spec.js", // Eles ignoram qualquer arquivo que não tenha a extensão .spec.js
+    "<rootDir>/src/**/__tests__/*.spec.js", // Eles ignoram qualquer arquivo que não tenha a extensão .spec.js
   ]
 }

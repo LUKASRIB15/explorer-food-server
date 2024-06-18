@@ -1,14 +1,14 @@
 const UsersRepositoryInMemory = require("../../repositories/users-repository-in-memory")
 const AppError = require("../../utils/AppError")
-const UsersService = require("../users-service")
+const UsersCreateService = require("../users-create-service")
 
-describe("UsersService", () => {
+describe("UsersCreateService", () => {
   let usersRepositoryInMemory = null
-  let usersService = null
+  let usersCreateService = null
   
   beforeEach(()=>{
     usersRepositoryInMemory = new UsersRepositoryInMemory()
-    usersService = new UsersService(usersRepositoryInMemory)
+    usersCreateService = new UsersCreateService(usersRepositoryInMemory)
   })
 
   test("After the user is created, a token must be generated", async ()=>{
@@ -18,7 +18,7 @@ describe("UsersService", () => {
       password: "123"
     }
 
-    const userCreated = await usersService.execute(userTest)
+    const userCreated = await usersCreateService.execute(userTest)
 
     expect(userCreated).toHaveProperty("token")
   })
@@ -36,10 +36,10 @@ describe("UsersService", () => {
       password: "123"
     }
 
-    await usersService.execute(userTest1)
+    await usersCreateService.execute(userTest1)
 
     expect(async()=>{
-      await usersService.execute(userTest2)
+      await usersCreateService.execute(userTest2)
     }).rejects.toEqual(new AppError("User already exists"))
   })
 })

@@ -1,10 +1,9 @@
 const { sign } = require("jsonwebtoken")
 const Auth = require("../configs/Auth")
-const knex = require("../database/knex")
 const AppError = require("../utils/AppError")
 const {hash} = require("bcryptjs")
 
-class UsersService{
+class UsersCreateService{
   usersRepository
   constructor(usersRepository){
     this.usersRepository = usersRepository
@@ -37,4 +36,4 @@ class UsersService{
   }
 }
 
-module.exports = UsersService
+module.exports = UsersCreateService

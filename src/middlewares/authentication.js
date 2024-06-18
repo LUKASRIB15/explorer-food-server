@@ -5,11 +5,11 @@ const {verify} = require("jsonwebtoken")
 function authentication(request, response, next){
   const authHeader = request.headers
 
-  if(!authHeader.cookie){
+  if(!authHeader.authorization){
     throw new AppError("Token missing", 401)
   }
 
-  const [, token] = authHeader.cookie.split("token=")
+  const [, token] = authHeader.authorization.split(" ")
 
   try{
     const {sub: user_id, role} = verify(token, Auth.jwt.secret)

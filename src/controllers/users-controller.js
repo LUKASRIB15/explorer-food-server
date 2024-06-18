@@ -1,5 +1,6 @@
 const UsersRepository = require("../repositories/users-repository")
-const UsersService = require("../services/users-service")
+const UsersCreateService = require("../services/users-create-service")
+const UsersShowService = require("../services/users-show-service")
 
 
 class UsersController {
@@ -7,18 +8,23 @@ class UsersController {
     const {name, email, password} = request.body
 
     const usersRepository = new UsersRepository()
-    const usersService = new UsersService(usersRepository)
+    const usersCreateService = new UsersCreateService(usersRepository)
 
-    const {token} = await usersService.execute({name, email, password})
+    const {token} = await usersCreateService.execute({name, email, password})
 
-    response.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-      maxAge: 15 * 60 * 1000 // 15 minutes
-    })
+    return response.status(201).json({token})
+  }
 
-    return response.status(201).json()
+  async show(request, response){
+    const {user_id} = request.user
+
+    const usersRepository = new UsersRepository()
+    const usersShowService = new UsersShowService(usersRepository)
+
+    const user = await usersShowService.execute({id: user_id})
+
+    return response.json(user)
+
   }
 }
 
