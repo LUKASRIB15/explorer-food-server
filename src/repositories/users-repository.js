@@ -18,6 +18,14 @@ class UsersRepository{
       user_id
     }
   }
+
+  async findById(id){
+    const user = await knex("user").where({id}).first()
+
+    delete user.password
+
+    return user
+  }
 }
 
 module.exports = UsersRepository

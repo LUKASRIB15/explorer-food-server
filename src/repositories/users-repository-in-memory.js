@@ -1,5 +1,10 @@
 class UsersRepositoryInMemory{
-  users = [] 
+  users = [{
+    id: 1,
+    name: "Test",
+    email: "test1@test1.com",
+    password: "$2a$08$ZilfRYsJqhbL2MznY0e5..pgW0YcLy4dd6/f5gREiNvj4HhSL/d2W"
+  }] 
   
   async findEmail(email){
     const user = this.users.find(user => user.email === email)
@@ -19,6 +24,12 @@ class UsersRepositoryInMemory{
     return {
       user_id: user.id
     }
+  }
+
+  async findById(id){
+    const user = this.users.filter(user => user.id === id)[0]
+    
+    return user
   }
 
 
