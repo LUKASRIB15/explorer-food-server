@@ -1,37 +1,15 @@
-const { sign } = require("jsonwebtoken")
-const Auth = require("../configs/Auth")
-const knex = require("../database/knex")
-const AppError = require("../utils/AppError")
-const {hash} = require("bcryptjs")
+const UsersRepository = require("../repositories/users-repository")
+const UsersService = require("../services/users-service")
+
 
 class UsersController {
   async create(request, response){
     const {name, email, password} = request.body
 
-    const checkUserExists = await knex("user").where({email}).first()
+    const usersRepository = new UsersRepository()
+    const usersService = new UsersService(usersRepository)
 
-    if(checkUserExists){
-      throw new AppError("User already exists")
-    }
-
-    const hashedPassword = await hash(password, 8)
-
-    const [user_id] = await knex("user").insert({
-      name,
-      email,
-      password: hashedPassword
-    })
-
-    const {secret, expiresIn} = Auth.jwt
-
-    if(!secret){
-      throw new AppError("Impossible to generate token. AUTH_SECRET is undefined")
-    }
-
-    const token = sign({role: "client"}, secret, {
-      subject: String(user_id),
-      expiresIn
-    })
+    const {token} = await usersService.execute({name, email, password})
 
     response.cookie("token", token, {
       httpOnly: true,
