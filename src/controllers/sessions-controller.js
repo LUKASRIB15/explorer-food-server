@@ -1,35 +1,15 @@
-const { compare } = require("bcryptjs")
-const Auth = require("../configs/Auth")
-const knex= require("../database/knex")
-const { sign } = require("jsonwebtoken")
+const SessionsRepository = require("../repositories/sessions-repository")
+const SessionsService = require("../services/sessions-service")
 
 class SessionsController {
   async create(request, response){
     const {email, password} = request.body
 
-    const user = await knex("user").where({email}).first()
+    const sessionsRepository = new SessionsRepository()
+    const sessionsService = new SessionsService(sessionsRepository)
 
-    if(!user){
-      throw new AppError("Incorrect email and/or password")
-    }
-
-    const passwordMatched = await compare(password, user.password)
-
-    if(!passwordMatched){
-      throw new AppError("Incorrect email and/or password")
-    }
-
-    const {secret, expiresIn} = Auth.jwt
-
-    if(!secret){
-      throw new AppError("Impossible to generate token. AUTH_SECRET is undefined")
-    }
-
-    const token = sign({role: user.role}, secret, {
-      subject: String(user.id),
-      expiresIn
-    })
-
+    const {token} = await sessionsService.execute({email, password})
+    
     response.cookie("token", token, {
       httpOnly: true,
       sameSite: "none",
