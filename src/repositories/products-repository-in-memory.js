@@ -1,6 +1,29 @@
 class ProductsRepositoryInMemory{
-  products = []
-  ingredients = []
+  products = [{
+    id: 1,
+    name: "test",
+    category: "test",
+    price: 10,
+    description: "test",
+    user_id: 1
+  },
+  {
+    id: 2,
+    name: "test 2",
+    category: "test",
+    price: 10,
+    description: "test",
+    user_id: 1
+  }
+]
+
+  ingredients = [
+    {
+      id: 1,
+      name: "ingredient test",
+      product_id: 1
+    }
+  ]
 
   async create({name, category, price, description, user_id}){
     this.products.push({
@@ -21,6 +44,23 @@ class ProductsRepositoryInMemory{
 
   async addIngredients(ingredients){
     this.ingredients.push(...ingredients)
+  }
+
+  async search(title){
+    const products = this.products.map(product=>{
+      return {
+        ...product,
+        ingredients: [
+          ...this.ingredients.filter(ingredient=>ingredient.product_id === product.id)
+        ]
+      }
+    })
+
+    return products.filter(product => product.name === new RegExp(`^${title}`, 'i'))
+  }
+
+  async filterIngredientsSortedByName(){
+    return this.ingredients
   }
 }
 
