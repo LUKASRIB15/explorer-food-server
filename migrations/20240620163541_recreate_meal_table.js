@@ -2,7 +2,7 @@ exports.up = knex => knex.schema.createTable("meal", table=>{
   table.increments("id"),
   table.text("avatar"),
   table.text("name"),
-  table.enum("category", ["Refeições"], {useNative: true, enumName: "roles"}).notNullable().default("client"),
+  table.enum("category", ["meal", "dessert", "drink"], {useNative: true, enumName: "category"}).notNullable().default("meal"),
   table.float("price", 2),
   table.text("description"),
   table.integer("user_id").references("id").inTable("user")
