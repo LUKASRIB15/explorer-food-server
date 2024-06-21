@@ -6,6 +6,7 @@ const routes = require("./routes")
 const database = require("./database/sqlite")
 const AppError = require("./utils/AppError")
 const cors = require("cors")
+const uploadConfig = require("./configs/Uploads")
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(cors({
   origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
 }))
 app.use(routes)
+app.use('/files', express.static(uploadConfig.UPLOADS_FOLDER))
 
 database()
 
