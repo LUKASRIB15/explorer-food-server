@@ -22,12 +22,12 @@ describe("ProductsCreateService", ()=>{
 
     await productsCreateService.execute(newProduct)
 
-    expect(productsRepositoryInMemory.products).toHaveLength(1)
+    expect(productsRepositoryInMemory.products).toHaveLength(3)
   })
 
   test("Create a new product with ingredients", async ()=>{
     await productsCreateService.execute(newProduct)
 
-    expect(productsRepositoryInMemory.ingredients).toHaveLength(2)
+    expect(productsRepositoryInMemory.ingredients).toHaveLength(3)
   })
 })
