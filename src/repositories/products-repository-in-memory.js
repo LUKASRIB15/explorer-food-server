@@ -62,6 +62,18 @@ class ProductsRepositoryInMemory{
   async filterIngredientsSortedByName(){
     return this.ingredients
   }
+
+  async findById(id){
+    const product = this.products.filter(product=>product.id === id)[0]
+  
+    return product
+  }
+
+  async findIngredientsByProductId(id){
+    const ingredients = this.ingredients.filter(ingredient=>ingredient.product_id === id)
+
+    return ingredients
+  }
 }
 
 module.exports = ProductsRepositoryInMemory

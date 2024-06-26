@@ -37,6 +37,18 @@ class ProductsRepository{
 
     return productsIngredients
   }
+
+  async findById(id){
+    const product = await knex("products").where({id}).first()
+  
+    return product
+  }
+
+  async findIngredientsByProductId(id){
+    const ingredients = await knex("ingredients").where({product_id: id})
+
+    return ingredients
+  }
 }
 
 module.exports = ProductsRepository

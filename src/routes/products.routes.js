@@ -16,5 +16,6 @@ productsRoutes.use(authentication)
 productsRoutes.post("/", productsController.create)
 productsRoutes.patch("/:product_id/avatar", upload.single('avatar'), productsAvatarController.update)
 productsRoutes.get("/", productsController.index)
+productsRoutes.get("/:product_id", productsController.show)
 
 module.exports = productsRoutes
