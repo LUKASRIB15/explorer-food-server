@@ -4,6 +4,7 @@ const ProductsAvatarController = require("../controllers/products-avatar-control
 const authentication = require("../middlewares/authentication")
 const multer = require("multer")
 const uploadConfig = require("../configs/Uploads")
+const authorization = require("../middlewares/authorization")
 
 const productsRoutes = Router()
 const productsController = new ProductsController()
@@ -13,8 +14,8 @@ const upload = multer(uploadConfig.MULTER)
 
 productsRoutes.use(authentication)
 
-productsRoutes.post("/", productsController.create)
-productsRoutes.patch("/:product_id/avatar", upload.single('avatar'), productsAvatarController.update)
+productsRoutes.post("/", authorization(["admin"]),productsController.create)
+productsRoutes.patch("/:product_id/avatar", authorization(["admin"]), upload.single('avatar'), productsAvatarController.update)
 productsRoutes.get("/", productsController.index)
 productsRoutes.get("/:product_id", productsController.show)
 
