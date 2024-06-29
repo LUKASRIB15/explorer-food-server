@@ -49,6 +49,14 @@ class ProductsRepository{
 
     return ingredients
   }
+
+  async update({product, product_id}){
+    await knex("products").update(product).where({id: product_id})
+  }
+
+  async delete(product_id){
+    await knex("products").where({id:product_id}).delete()
+  }
 }
 
 module.exports = ProductsRepository

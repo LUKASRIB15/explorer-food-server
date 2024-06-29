@@ -10,7 +10,6 @@ class ProductsAvatarUpdateService{
   }
 
   async execute({avatar, product_id}){
-    
     const product = await this.productsAvatarRepository.findProduct({product_id})
 
     if(!product){

@@ -4,6 +4,8 @@ const ProductsIndexService = require("../services/products-index-service")
 const knex = require("../database/knex")
 const AppError = require("../utils/AppError")
 const ProductsShowService = require("../services/products-show-service")
+const ProductsUpdateService = require("../services/products-update-service")
+const ProductsDeleteService = require("../services/products-delete-service")
 
 class ProductsController{
 
@@ -26,9 +28,9 @@ class ProductsController{
     const productsRepository = new ProductsRepository()
     const productsCreateService = new ProductsCreateService(productsRepository)
 
-    await productsCreateService.execute({name, category, ingredients, price, description, user_id})
+    const {product_id}= await productsCreateService.execute({name, category, ingredients, price, description, user_id})
 
-    return response.status(201).json()
+    return response.status(201).json({product_id})
   }
 
   async show(request, response){
@@ -43,6 +45,31 @@ class ProductsController{
       ...product,
       ingredients
     })
+  }
+
+  async update(request, response){
+    const {name, category, ingredients, price, description} = request.body
+    const {product_id} = request.params
+
+    const productsRepository = new ProductsRepository()
+    const productsUpdateService = new ProductsUpdateService(productsRepository)
+
+    await productsUpdateService.execute({name, category, ingredients, price, description, product_id})
+    
+
+    return response.json()
+  }
+
+  async delete(request, response){
+    const {product_id} = request.params
+
+    const productsRepository = new ProductsRepository()
+    const productsDeleteService = new ProductsDeleteService(productsRepository)
+
+    await productsDeleteService.execute({product_id})
+    
+    return response.json()
+
   }
 }
 
