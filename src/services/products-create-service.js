@@ -17,6 +17,8 @@ class ProductsCreateService{
     })
 
     await this.productsRepository.addIngredients(productIngredients)
+
+    return {product_id}
   }
 }
 

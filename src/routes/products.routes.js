@@ -18,5 +18,7 @@ productsRoutes.post("/", authorization(["admin"]),productsController.create)
 productsRoutes.patch("/:product_id/avatar", authorization(["admin"]), upload.single('avatar'), productsAvatarController.update)
 productsRoutes.get("/", productsController.index)
 productsRoutes.get("/:product_id", productsController.show)
+productsRoutes.put("/:product_id", productsController.update)
+productsRoutes.delete("/:product_id", productsController.delete)
 
 module.exports = productsRoutes
